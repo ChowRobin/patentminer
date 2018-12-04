@@ -1,0 +1,6 @@
+spring:
+  data:
+    mongodb:
+      uri: mongodb://localhost:27017/pminer
+    solr:
+      host: http://localhost:8081/solr
