@@ -11,7 +11,11 @@ public interface UserService {
 
     List<User> listByCondition(Map<String, Object> map, int pageNo, int pageSize);
 
-    String login(User user);
+    String login(String userName, String password);
 
     Integer register(User user);
+
+    Integer update(Integer id, User user);
+
+    Integer delete(Integer id);
 }

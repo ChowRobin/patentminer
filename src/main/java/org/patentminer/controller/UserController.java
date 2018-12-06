@@ -4,7 +4,6 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
-import io.swagger.models.auth.In;
 import org.patentminer.bean.ResultBean;
 import org.patentminer.model.User;
 import org.patentminer.service.UserService;
@@ -24,6 +23,12 @@ public class UserController {
     private UserService userService;
 
     @ApiOperation(value = "分页获取用户信息", notes = "展示用户信息")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "pageNo", value = "页号", required = false, defaultValue = "1", dataType = "Integer"),
+            @ApiImplicitParam(name = "pageSize", value = "页大小", required = false, defaultValue = "10", dataType = "Integer"),
+            @ApiImplicitParam(name = "userName", value = "用户名", required = true, dataType = "String"),
+            @ApiImplicitParam(name = "password", value = "密码", required = true, dataType = "String")
+    })
     @GetMapping("")
     public ResultBean<List<User>> listUser(
             @RequestParam(name = "pageNo", required = false, defaultValue = "1") int pageNo,
@@ -38,9 +43,9 @@ public class UserController {
             @ApiImplicitParam(name = "userName", value = "用户名", required = true, dataType = "String"),
             @ApiImplicitParam(name = "password", value = "密码", required = true, dataType = "String")
     })
-    @PostMapping("/login")
-    public ResultBean<String> login(@RequestBody User user) {
-        return new ResultBean<>(userService.login(user));
+    @GetMapping("/token")
+    public ResultBean<String> login(@RequestParam String userName, @RequestParam String password) {
+        return new ResultBean<>(userService.login(userName, password));
     }
 
     @ApiOperation(value = "注册新用户", notes = "通过用户名密码注册新用户")
@@ -48,11 +53,27 @@ public class UserController {
             @ApiImplicitParam(name = "userName", value = "用户名", required = true, dataType = "String"),
             @ApiImplicitParam(name = "password", value = "密码", required = true, dataType = "String")
     })
-    @PostMapping("/register")
+    @PostMapping("")
     public ResultBean<Integer> register(@RequestBody User user) {
         return new ResultBean<>(userService.register(user));
     }
 
-    @PostMapping("/")
+    @ApiOperation(value = "更新用户信息", notes = "通过用户id更改用户信息")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "userName", value = "用户名", required = false, dataType = "String"),
+            @ApiImplicitParam(name = "password", value = "密码", required = false, dataType = "String")
+    })
+    @PutMapping("/{id}")
+    public ResultBean<Integer> updateUser(@PathVariable Integer id,
+                                          @RequestBody User user) {
+        return new ResultBean<>(userService.update(id, user));
+    }
+
+    @ApiOperation(value = "删除用户", notes = "通过用户id删除用户")
+    @ApiImplicitParam(name = "id", value = "用户id", required = true, dataType = "Integer")
+    @DeleteMapping("/{id}")
+    public ResultBean<Integer> deleteUser(@PathVariable Integer id) {
+        return new ResultBean<>(userService.delete(id));
+    }
 
 }
