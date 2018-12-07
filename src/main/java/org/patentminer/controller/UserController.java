@@ -22,6 +22,13 @@ public class UserController {
     @Autowired
     private UserService userService;
 
+    /**
+     * 分页获取用户信息
+     * @param pageNo
+     * @param pageSize
+     * @param request
+     * @return
+     */
     @ApiOperation(value = "分页获取用户信息", notes = "展示用户信息")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "pageNo", value = "页号", required = false, defaultValue = "1", dataType = "Integer"),
@@ -38,6 +45,12 @@ public class UserController {
                 CommonUtil.getParameterMap(request), pageNo, pageSize));
     }
 
+    /**
+     * 登录获取token
+     * @param userName
+     * @param password
+     * @return
+     */
     @ApiOperation(value = "登录获取token", notes = "用户名密码登录获取token")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "userName", value = "用户名", required = true, dataType = "String"),
@@ -48,6 +61,11 @@ public class UserController {
         return new ResultBean<>(userService.login(userName, password));
     }
 
+    /**
+     * 注册新用户
+     * @param user
+     * @return
+     */
     @ApiOperation(value = "注册新用户", notes = "通过用户名密码注册新用户")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "userName", value = "用户名", required = true, dataType = "String"),
@@ -58,6 +76,12 @@ public class UserController {
         return new ResultBean<>(userService.register(user));
     }
 
+    /**
+     * 更新用户信息
+     * @param id
+     * @param user
+     * @return
+     */
     @ApiOperation(value = "更新用户信息", notes = "通过用户id更改用户信息")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "userName", value = "用户名", required = false, dataType = "String"),
@@ -69,6 +93,11 @@ public class UserController {
         return new ResultBean<>(userService.update(id, user));
     }
 
+    /**
+     * 删除用户
+     * @param id
+     * @return
+     */
     @ApiOperation(value = "删除用户", notes = "通过用户id删除用户")
     @ApiImplicitParam(name = "id", value = "用户id", required = true, dataType = "Integer")
     @DeleteMapping("/{id}")

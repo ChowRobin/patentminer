@@ -1,6 +1,5 @@
 package org.patentminer.service.impl;
 
-import io.swagger.models.auth.In;
 import org.patentminer.dao.UserRepository;
 import org.patentminer.exception.CheckException;
 import org.patentminer.model.User;
@@ -31,6 +30,13 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private MongoUtil mongoUtil;
 
+    /**
+     *
+     * @param map
+     * @param pageNo
+     * @param pageSize
+     * @return
+     */
     @Override
     public List<User> listByCondition(Map<String, Object> map, int pageNo, int pageSize) {
         map.remove("pageNo");
@@ -46,10 +52,22 @@ public class UserServiceImpl implements UserService {
         return mongoTemplate.find(query, User.class);
     }
 
+    /**
+     * 根据键值对查询单个用户
+     * @param k
+     * @param v
+     * @return
+     */
     private User findOneByCondition(String k, Object v) {
         return mongoTemplate.findOne(new Query(Criteria.where(k).is(v)), User.class);
     }
 
+    /**
+     *
+     * @param userName
+     * @param password
+     * @return
+     */
     @Override
     public String login(String userName, String password) {
         User userInDB = findOneByCondition("userName", userName);
@@ -62,6 +80,11 @@ public class UserServiceImpl implements UserService {
         }
     }
 
+    /**
+     *
+     * @param user
+     * @return
+     */
     @Override
     public Integer register(User user) {
         if (findOneByCondition("userName", user.getUserName()) != null) {
@@ -74,6 +97,11 @@ public class UserServiceImpl implements UserService {
     }
 
 
+    /**
+     *
+     * @param user
+     * @return
+     */
     private Update getUpdate(User user) {
         Update update = new Update();
         Object userName, password;
@@ -85,6 +113,12 @@ public class UserServiceImpl implements UserService {
         return update;
     }
 
+    /**
+     *
+     * @param id
+     * @param user
+     * @return
+     */
     @Override
     public Integer update(Integer id, User user) {
         Query query = new Query(Criteria.where("id").is(id));
@@ -96,6 +130,11 @@ public class UserServiceImpl implements UserService {
         return id;
     }
 
+    /**
+     *
+     * @param id
+     * @return
+     */
     @Override
     public Integer delete(Integer id) {
         if (CommonUtil.unboxOptional(userRepository.findById(id)) == null) {
