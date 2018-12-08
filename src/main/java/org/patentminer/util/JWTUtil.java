@@ -31,7 +31,7 @@ public class JWTUtil {
         }
     }
 
-    public static String getTel(String token) {
+    public static String getUserName(String token) {
         try {
             DecodedJWT jwt = JWT.decode(token);
             return jwt.getClaim("userName").asString();

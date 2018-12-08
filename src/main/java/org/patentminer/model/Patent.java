@@ -20,11 +20,11 @@ public class Patent {
     @Field("applicants")
     List<Applicant> applicants;
 
-    @Field("application-date")
-    String applicationDate;
-
     @Field("invention-title")
     String inventionTitle;
+
+    @Field("application-date")
+    String applicationDate;
 
     @Field("publication-date")
     String publicationDate;
