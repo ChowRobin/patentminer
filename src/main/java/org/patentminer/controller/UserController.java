@@ -8,6 +8,7 @@ import org.patentminer.bean.ResultBean;
 import org.patentminer.model.User;
 import org.patentminer.service.UserService;
 import org.patentminer.util.CommonUtil;
+import org.patentminer.util.JWTUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -47,8 +48,7 @@ public class UserController {
 
     /**
      * 登录获取token
-     * @param userName
-     * @param password
+     * @param user
      * @return
      */
     @ApiOperation(value = "登录获取token", notes = "用户名密码登录获取token")
@@ -56,9 +56,9 @@ public class UserController {
             @ApiImplicitParam(name = "userName", value = "用户名", required = true, dataType = "String"),
             @ApiImplicitParam(name = "password", value = "密码", required = true, dataType = "String")
     })
-    @GetMapping("/token")
-    public ResultBean<String> login(@RequestParam String userName, @RequestParam String password) {
-        return new ResultBean<>(userService.login(userName, password));
+    @PostMapping("/login")
+    public ResultBean<String> login(@RequestBody User user) {
+        return new ResultBean<>(userService.login(user.getUserName(), user.getPassword()));
     }
 
     /**
@@ -77,32 +77,34 @@ public class UserController {
     }
 
     /**
-     * 更新用户信息
-     * @param id
+     *
      * @param user
+     * @param request
      * @return
      */
-    @ApiOperation(value = "更新用户信息", notes = "通过用户id更改用户信息")
+    @ApiOperation(value = "更新用户信息", notes = "通过token更改用户信息")
     @ApiImplicitParams({
+            @ApiImplicitParam(name = "token", value = "请求头带登录凭证", required = true, dataType = "String"),
             @ApiImplicitParam(name = "userName", value = "用户名", required = false, dataType = "String"),
             @ApiImplicitParam(name = "password", value = "密码", required = false, dataType = "String")
     })
-    @PutMapping("/{id}")
-    public ResultBean<Integer> updateUser(@PathVariable Integer id,
-                                          @RequestBody User user) {
-        return new ResultBean<>(userService.update(id, user));
+    @PutMapping("")
+    public ResultBean<Integer> updateUser(@RequestBody User user, HttpServletRequest request) {
+        return new ResultBean<>(userService.update(
+                JWTUtil.getId(CommonUtil.getHeader(request, "token")), user));
     }
 
     /**
-     * 删除用户
-     * @param id
+     *
+     * @param request
      * @return
      */
-    @ApiOperation(value = "删除用户", notes = "通过用户id删除用户")
-    @ApiImplicitParam(name = "id", value = "用户id", required = true, dataType = "Integer")
-    @DeleteMapping("/{id}")
-    public ResultBean<Integer> deleteUser(@PathVariable Integer id) {
-        return new ResultBean<>(userService.delete(id));
+    @ApiOperation(value = "删除用户", notes = "通过token删除用户")
+    @ApiImplicitParam(name = "token", value = "请求头带登录凭证", required = true, dataType = "String")
+    @DeleteMapping("")
+    public ResultBean<Integer> deleteUser(HttpServletRequest request) {
+        return new ResultBean<>(userService.delete(
+                JWTUtil.getId(CommonUtil.getHeader(request, "token"))));
     }
 
 }

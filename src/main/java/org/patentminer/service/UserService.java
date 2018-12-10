@@ -11,6 +11,8 @@ public interface UserService {
 
     List<User> listByCondition(Map<String, Object> map, int pageNo, int pageSize);
 
+    String getPasswordByUserName(String userName);
+
     String login(String userName, String password);
 
     Integer register(User user);
@@ -18,4 +20,6 @@ public interface UserService {
     Integer update(Integer id, User user);
 
     Integer delete(Integer id);
+
+    String getRole(String userName);
 }

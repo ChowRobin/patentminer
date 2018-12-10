@@ -42,12 +42,24 @@ public class JWTUtil {
         }
     }
 
-    public static String sign(String userName, String password) {
+    public static int getId(String token) {
+        try {
+            DecodedJWT jwt = JWT.decode(token);
+            return jwt.getClaim("id").asInt();
+        } catch (JWTDecodeException e) {
+            return -1;
+        } catch (NullPointerException e) {
+            return -1;
+        }
+    }
+
+    public static String sign(int id, String userName, String password) {
         try {
             Date date = new Date(System.currentTimeMillis() + EXPIRE_TIME);
             Algorithm algorithm = Algorithm.HMAC256(password);
             // 附带username信息
             return JWT.create()
+                    .withClaim("id", id)
                     .withClaim("userName", userName)
                     .withExpiresAt(date)
                     .sign(algorithm);

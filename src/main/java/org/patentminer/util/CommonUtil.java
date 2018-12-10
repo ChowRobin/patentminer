@@ -1,5 +1,7 @@
 package org.patentminer.util;
 
+import org.patentminer.exception.CheckException;
+
 import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.Map;
@@ -26,5 +28,14 @@ public class CommonUtil {
             map.put(key, value);
         }
         return map;
+    }
+
+    public static String getHeader(HttpServletRequest request, String key) {
+        String val = request.getHeader(key);
+        if (val == null) {
+            throw new CheckException("header not exists");
+        } else {
+            return val;
+        }
     }
 }

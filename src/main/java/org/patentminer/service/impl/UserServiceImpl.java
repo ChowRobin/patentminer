@@ -52,6 +52,11 @@ public class UserServiceImpl implements UserService {
         return mongoTemplate.find(query, User.class);
     }
 
+    @Override
+    public String getPasswordByUserName(String userName) {
+        return findOneByCondition("userName", userName).getPassword();
+    }
+
     /**
      * 根据键值对查询单个用户
      * @param k
@@ -76,7 +81,7 @@ public class UserServiceImpl implements UserService {
         } else if (!userInDB.getPassword().equals(password)) {
             throw new CheckException("password is not current!");
         } else {
-            return JWTUtil.sign(userInDB.getUserName(), userInDB.getPassword());
+            return JWTUtil.sign(userInDB.getId(), userInDB.getUserName(), userInDB.getPassword());
         }
     }
 
@@ -144,5 +149,10 @@ public class UserServiceImpl implements UserService {
             userRepository.deleteById(id);
         }
         return id;
+    }
+
+    @Override
+    public String getRole(String userName) {
+        return null;
     }
 }
