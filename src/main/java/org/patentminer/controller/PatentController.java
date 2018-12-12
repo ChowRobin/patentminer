@@ -32,11 +32,11 @@ public class PatentController {
      */
     @ApiOperation(value = "查询专利", notes = "根据条件查询专利")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "pageNo", value = "页号", required = false, defaultValue = "1", dataType = "Integer"),
-            @ApiImplicitParam(name = "pageSize", value = "页大小", required = false, defaultValue = "10", dataType = "Integer"),
-            @ApiImplicitParam(name = "inventionTitle", value = "专利名", required = true, dataType = "String"),
-            @ApiImplicitParam(name = "applicationDate", value = "申请日期", required = true, dataType = "String"),
-            @ApiImplicitParam(name = "publicationDate", value = "发布日期", required = true, dataType = "String"),
+            @ApiImplicitParam(name = "pageNo", value = "页号", defaultValue = "1", dataType = "Integer"),
+            @ApiImplicitParam(name = "pageSize", value = "页大小", defaultValue = "10", dataType = "Integer"),
+            @ApiImplicitParam(name = "inventionTitle", value = "专利名", dataType = "String"),
+            @ApiImplicitParam(name = "applicationDate", value = "申请日期", dataType = "String"),
+            @ApiImplicitParam(name = "publicationDate", value = "发布日期", dataType = "String"),
     })
     @GetMapping("")
     public ResultBean<List<Patent>> listPatentByCondition(
