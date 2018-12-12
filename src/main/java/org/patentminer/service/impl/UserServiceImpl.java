@@ -1,5 +1,6 @@
 package org.patentminer.service.impl;
 
+import org.patentminer.dao.UserDao;
 import org.patentminer.dao.UserRepository;
 import org.patentminer.exception.CheckException;
 import org.patentminer.model.User;
@@ -8,6 +9,7 @@ import org.patentminer.util.CommonUtil;
 import org.patentminer.util.JWTUtil;
 import org.patentminer.util.MongoUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
@@ -15,7 +17,6 @@ import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.util.List;
 import java.util.Map;
 
 @Service
@@ -23,6 +24,9 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private UserDao userDao;
 
     @Resource
     private MongoTemplate mongoTemplate;
@@ -38,7 +42,7 @@ public class UserServiceImpl implements UserService {
      * @return
      */
     @Override
-    public List<User> listByCondition(Map<String, Object> map, int pageNo, int pageSize) {
+    public Page<User> listByCondition(Map<String, Object> map, int pageNo, int pageSize) {
         map.remove("pageNo");
         map.remove("pageSize");
         Query query = new Query();
@@ -48,8 +52,7 @@ public class UserServiceImpl implements UserService {
             }
             query.addCriteria(Criteria.where(k).is(v));
         });
-        query.skip(pageNo - 1 * pageSize).limit(pageSize);
-        return mongoTemplate.find(query, User.class);
+        return userDao.paginationList(query, pageNo, pageSize);
     }
 
     @Override

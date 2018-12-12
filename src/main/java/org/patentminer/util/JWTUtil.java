@@ -6,6 +6,7 @@ import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTDecodeException;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import org.apache.log4j.Logger;
+import org.patentminer.exception.CheckException;
 
 import java.io.UnsupportedEncodingException;
 import java.util.Date;
@@ -67,4 +68,5 @@ public class JWTUtil {
             return null;
         }
     }
+
 }

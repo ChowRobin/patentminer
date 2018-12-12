@@ -1,6 +1,7 @@
 package org.patentminer.bean;
 
 
+import javax.servlet.http.HttpServletResponse;
 import java.io.Serializable;
 
 public class ResultBean<T> implements Serializable {
@@ -23,6 +24,8 @@ public class ResultBean<T> implements Serializable {
 
     private T data;
 
+    private HttpServletResponse response;
+
     public ResultBean() {
         super();
     }
@@ -31,6 +34,16 @@ public class ResultBean<T> implements Serializable {
         super();
         this.code = code;
         this.msg = msg;
+    }
+
+    public ResultBean(T data, HttpServletResponse response) {
+        super();
+        this.data = data;
+        this.response = response;
+    }
+
+    public ResultBean(HttpServletResponse response) {
+        this.response = response;
     }
 
     public ResultBean(T data) {
@@ -42,6 +55,15 @@ public class ResultBean<T> implements Serializable {
         super();
         this.msg = e.toString();
         this.code = UNKNOWN_EXCEPTION;
+    }
+
+    public
+    ResultBean setHttpStatus(int status) {
+        if (this.response != null) {
+            System.out.println("update http status");
+            this.response.setStatus(status);
+        }
+        return this;
     }
 
     public static int getSUCCESS() {
@@ -68,16 +90,19 @@ public class ResultBean<T> implements Serializable {
         return data;
     }
 
-    public void setMsg(String msg) {
+    public ResultBean setMsg(String msg) {
         this.msg = msg;
+        return this;
     }
 
-    public void setCode(int code) {
+    public ResultBean setCode(int code) {
         this.code = code;
+        return this;
     }
 
-    public void setData(T data) {
+    public ResultBean setData(T data) {
         this.data = data;
+        return this;
     }
 
     public static int getNoPermission() {

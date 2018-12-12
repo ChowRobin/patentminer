@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
 @Api(value = "/patent", tags = "专利接口模块")
@@ -41,9 +42,9 @@ public class PatentController {
     public ResultBean<List<Patent>> listPatentByCondition(
             @RequestParam(name = "pageNo", required = false, defaultValue = "1") int pageNo,
             @RequestParam(name = "pageSize", required = false, defaultValue = "10") int pageSize,
-            HttpServletRequest request) {
+            HttpServletRequest request, HttpServletResponse response) {
         return new ResultBean<>(patentService.listByCondition(
-                CommonUtil.getParameterMap(request), pageNo, pageSize));
+                CommonUtil.getParameterMap(request), pageNo, pageSize), response);
     }
 
     @ApiOperation(value = "添加专利", notes = "增加专利")
@@ -55,8 +56,8 @@ public class PatentController {
             @ApiImplicitParam(name = "publicationDate", value = "发布日期", dataType = "String"),
     })
     @PostMapping("")
-    public ResultBean<String> createPatent(@RequestBody Patent patent) {
-        return new ResultBean<>(patentService.create(patent));
+    public ResultBean<String> createPatent(@RequestBody Patent patent, HttpServletResponse response) {
+        return new ResultBean<>(patentService.create(patent), response);
     }
 
     @ApiOperation(value = "更新专利信息", notes = "通过专利号更新专利信息")
@@ -69,14 +70,15 @@ public class PatentController {
             @ApiImplicitParam(name = "publicationDate", value = "发布日期", dataType = "String"),
     })
     @PutMapping("")
-    public ResultBean<String> updatePatent(@RequestParam String id, @RequestBody Patent patent) {
-        return new ResultBean<>(patentService.update(patent, id));
+    public ResultBean<String> updatePatent(@RequestParam String id, @RequestBody Patent patent,
+                                           HttpServletResponse response) {
+        return new ResultBean<>(patentService.update(patent, id), response);
     }
 
     @ApiOperation(value = "删除专利", notes = "根据专利号删除专利")
     @ApiImplicitParam(name = "id", value = "专利号", required = true, dataType = "String")
     @DeleteMapping("")
-    public ResultBean<String> deletePatent(@RequestParam String id) {
-        return new ResultBean<>(patentService.delete(id));
+    public ResultBean<String> deletePatent(@RequestParam String id, HttpServletResponse response) {
+        return new ResultBean<>(patentService.delete(id), response);
     }
 }
