@@ -22,15 +22,15 @@ public class PageResultBean<T> extends ResultBean<T> implements Serializable {
     // 当前页的记录数量
     private int pageSize;
 
-    public PageResultBean(Page<User> users, HttpServletResponse response) {
-        super((T) users.get(), response);
-        PageResultBean(users);
+    public PageResultBean(Page<T> page, HttpServletResponse response) {
+        super((T) page.get(), response);
+        PageResultBean(page);
     }
 
-    public void PageResultBean(Page<User> users) {
-        int size = users.getPageable().getPageSize();
-        long total = users.getTotalElements();
-        this.setPageNo(users.getPageable().getPageNumber())
+    public void PageResultBean(Page<T> page) {
+        int size = page.getPageable().getPageSize();
+        long total = page.getTotalElements();
+        this.setPageNo(page.getPageable().getPageNumber())
                 .setPageSize(size)
                 .setTotalRecord(total)
                 .setPageCount(size == 0 ? 1 : (int) Math.ceil((double) total / (double) size));

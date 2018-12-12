@@ -60,7 +60,6 @@ public class ResultBean<T> implements Serializable {
     public
     ResultBean setHttpStatus(int status) {
         if (this.response != null) {
-            System.out.println("update http status");
             this.response.setStatus(status);
         }
         return this;

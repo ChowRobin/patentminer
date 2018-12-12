@@ -4,11 +4,13 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
+import org.patentminer.bean.PageResultBean;
 import org.patentminer.bean.ResultBean;
 import org.patentminer.model.Patent;
 import org.patentminer.service.PatentService;
 import org.patentminer.util.CommonUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -39,11 +41,11 @@ public class PatentController {
             @ApiImplicitParam(name = "publicationDate", value = "发布日期", dataType = "String"),
     })
     @GetMapping("")
-    public ResultBean<List<Patent>> listPatentByCondition(
+    public PageResultBean<Patent> listPatentByCondition(
             @RequestParam(name = "pageNo", required = false, defaultValue = "1") int pageNo,
             @RequestParam(name = "pageSize", required = false, defaultValue = "10") int pageSize,
             HttpServletRequest request, HttpServletResponse response) {
-        return new ResultBean<>(patentService.listByCondition(
+        return new PageResultBean<>(patentService.listByCondition(
                 CommonUtil.getParameterMap(request), pageNo, pageSize), response);
     }
 

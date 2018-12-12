@@ -3,6 +3,7 @@ package org.patentminer.service.impl;
 import org.patentminer.dao.UserDao;
 import org.patentminer.dao.UserRepository;
 import org.patentminer.exception.CheckException;
+import org.patentminer.exception.ConflictException;
 import org.patentminer.model.User;
 import org.patentminer.service.UserService;
 import org.patentminer.util.CommonUtil;
@@ -49,8 +50,10 @@ public class UserServiceImpl implements UserService {
         map.forEach((k, v) -> {
             if (k.equals("id")) {
                 v = Integer.parseInt((String) v);
+                query.addCriteria(Criteria.where(k).is(v));
+            } else {
+                query.addCriteria(Criteria.where(k).regex(".*?" + v + ".*"));
             }
-            query.addCriteria(Criteria.where(k).is(v));
         });
         return userDao.paginationList(query, pageNo, pageSize);
     }
@@ -96,7 +99,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public Integer register(User user) {
         if (findOneByCondition("userName", user.getUserName()) != null) {
-            throw new CheckException("user has exists!");
+            throw new ConflictException("user has exists!");
         } else {
             user.setId(mongoUtil.getNextSequence("users"));
             userRepository.save(user);

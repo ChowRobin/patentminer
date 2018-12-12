@@ -5,6 +5,7 @@ import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.patentminer.bean.ResultBean;
 import org.patentminer.exception.CheckException;
+import org.patentminer.exception.ConflictException;
 import org.patentminer.exception.UnloginException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -36,6 +37,11 @@ public class ControllerAOP {
         return result;
     }
 
+    @Around("execution(public org.patentminer.bean.PageResultBean *(..)) && args(.., res)")
+    public Object handlerControllerMethodTemp(ProceedingJoinPoint pjp, HttpServletResponse res) {
+        return handlerControllerMethod(pjp, res);
+    }
+
     private ResultBean<?> handlerException(ProceedingJoinPoint pjp, Throwable e, HttpServletResponse res) {
         ResultBean<?> result = new ResultBean(res);
 
@@ -48,6 +54,11 @@ public class ControllerAOP {
             result.setMsg("Unlogin")
                     .setCode(ResultBean.NO_LOGIN)
                     .setHttpStatus(401);
+        } else if (e instanceof ConflictException) {
+            System.out.println("ConfictException");
+            result.setMsg(e.getMessage())
+                    .setCode(ResultBean.FAIL)
+                    .setHttpStatus(409);
         } else {
             logger.error(pjp.getSignature() + " error ", e);
             //TODO 未知的异常，应该格外注意，可以发送邮件通知等

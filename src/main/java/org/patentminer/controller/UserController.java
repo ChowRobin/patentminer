@@ -34,13 +34,13 @@ public class UserController {
      */
     @ApiOperation(value = "分页获取用户信息", notes = "展示用户信息")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "pageNo", value = "页号", required = false, defaultValue = "1", dataType = "Integer"),
-            @ApiImplicitParam(name = "pageSize", value = "页大小", required = false, defaultValue = "10", dataType = "Integer"),
-            @ApiImplicitParam(name = "userName", value = "用户名", required = true, dataType = "String"),
-            @ApiImplicitParam(name = "password", value = "密码", required = true, dataType = "String")
+            @ApiImplicitParam(name = "pageNo", value = "页号", defaultValue = "1", dataType = "Integer"),
+            @ApiImplicitParam(name = "pageSize", value = "页大小", defaultValue = "10", dataType = "Integer"),
+            @ApiImplicitParam(name = "userName", value = "用户名", dataType = "String"),
+            @ApiImplicitParam(name = "password", value = "密码", dataType = "String")
     })
     @GetMapping("")
-    public PageResultBean<Page<User>> listUser(
+    public PageResultBean<User> listUser(
             @RequestParam(name = "pageNo", required = false, defaultValue = "1") int pageNo,
             @RequestParam(name = "pageSize", required = false, defaultValue = "10") int pageSize,
             HttpServletRequest request, HttpServletResponse response) {
