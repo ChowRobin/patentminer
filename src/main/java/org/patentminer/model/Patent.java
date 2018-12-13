@@ -6,10 +6,29 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Data
 @Document(collection = "patents")
 public class Patent {
+
+    public Patent() {}
+
+    public Patent(PatentDTO patentDTO) {
+        this.id = patentDTO.getId();
+        this.abstractStr = patentDTO.getAbstractStr();
+        this.abstractCn = patentDTO.getAbstractCn();
+        this.inventionTitle = patentDTO.getInventionTitle();
+        this.inventionTitleCn = patentDTO.getInventionTitleCn();
+        this.applicationDate = patentDTO.getApplicationDate();
+        this.publicationDate = patentDTO.getPublicationDate();
+        this.applicationNumber = patentDTO.getApplicationNumber();
+        this.publicationNumber = patentDTO.getPublicationNumber();
+        this.ipcs = patentDTO.getIpcs();
+
+        this.inventorIds = patentDTO.getInventors().stream().map(p -> p.getId()).collect(Collectors.toList());
+        this.companyIds = patentDTO.getCompanies().stream().map(p -> p.getId()).collect(Collectors.toList());
+    }
 
     @Id
     String id;
@@ -37,11 +56,11 @@ public class Patent {
     @Field("publication_date")
     String publicationDate;
 
-    @Field("inventors")
-    List<Inventor> inventors;
+    @Field("inventor_ids")
+    List<String> inventorIds;
 
-    @Field("companies")
-    List<Company> companies;
+    @Field("company_ids")
+    List<String> companyIds;
 
     @Field("application_number")
     String applicationNumber;
@@ -50,7 +69,7 @@ public class Patent {
     String publicationNumber;
 
     @Field("ipc")
-    List<String> ipcList;
+    List<String> ipcs;
 
 }
 

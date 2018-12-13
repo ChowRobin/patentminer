@@ -3,7 +3,12 @@ package org.patentminer.service.impl;
 import org.patentminer.dao.PatentDao;
 import org.patentminer.dao.PatentRepository;
 import org.patentminer.exception.CheckException;
+import org.patentminer.model.Company;
+import org.patentminer.model.Inventor;
 import org.patentminer.model.Patent;
+import org.patentminer.model.PatentDTO;
+import org.patentminer.service.CompanyService;
+import org.patentminer.service.InventorService;
 import org.patentminer.service.PatentService;
 import org.patentminer.util.CommonUtil;
 import org.patentminer.util.MongoUtil;
@@ -16,7 +21,10 @@ import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 public class PatentServiceImpl implements PatentService {
@@ -33,8 +41,14 @@ public class PatentServiceImpl implements PatentService {
     @Autowired
     private MongoUtil mongoUtil;
 
+    @Autowired
+    private CompanyService companyService;
+
+    @Autowired
+    private InventorService inventorService;
+
     @Override
-    public Page<Patent> listByCondition(Map<String, Object> parameterMap, int pageNo, int pageSize) {
+    public Page<PatentDTO> listByCondition(Map<String, Object> parameterMap, int pageNo, int pageSize) {
         parameterMap.remove("pageNo");
         parameterMap.remove("pageSize");
         Query query = new Query();
@@ -88,6 +102,25 @@ public class PatentServiceImpl implements PatentService {
             patentRepository.deleteById(id);
         }
         return id;
+    }
+
+    @Override
+    public PatentDTO PO2DTO(Patent patent) {
+        PatentDTO patentDTO = new PatentDTO(patent);
+        patentDTO.setCompanies(patent.getCompanyIds()
+                .stream()
+                .map(id -> companyService.findById(id))
+                .collect(Collectors.toList()));
+        patentDTO.setInventors(patent.getInventorIds()
+                .stream()
+                .map(id -> inventorService.findById(id))
+                .collect(Collectors.toList()));
+        return patentDTO;
+    }
+
+    @Override
+    public Patent DTO2PO(PatentDTO patentDTO) {
+        return new Patent(patentDTO);
     }
 
 }
