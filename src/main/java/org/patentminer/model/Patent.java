@@ -17,16 +17,40 @@ public class Patent {
     @Field("abstract")
     String abstractStr;
 
-    @Field("applicants")
-    List<Applicant> applicants;
+    @Field("abstract_cn")
+    String abstractCn;
 
-    @Field("invention-title")
-    String inventionTitle;
+//    String description;
 
-    @Field("application-date")
+//    @Field("applicants")
+//    List<Applicant> applicants;
+
+    @Field("invention_titles")
+    List<String> inventionTitle;
+
+    @Field("invention_titles_cn")
+    List<String> inventionTitleCn;
+
+    @Field("application_date")
     String applicationDate;
 
-    @Field("publication-date")
+    @Field("publication_date")
     String publicationDate;
 
+    @Field("inventors")
+    List<Inventor> inventors;
+
+    @Field("companies")
+    List<Company> companies;
+
+    @Field("application_number")
+    String applicationNumber;
+
+    @Field("publication_number")
+    String publicationNumber;
+
+    @Field("ipc")
+    List<String> ipcList;
+
 }
+

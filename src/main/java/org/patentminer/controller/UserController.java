@@ -87,8 +87,8 @@ public class UserController {
     @ApiOperation(value = "更新用户信息", notes = "通过token更改用户信息")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "token", value = "请求头带登录凭证", required = true, dataType = "String"),
-            @ApiImplicitParam(name = "userName", value = "用户名", required = false, dataType = "String"),
-            @ApiImplicitParam(name = "password", value = "密码", required = false, dataType = "String")
+            @ApiImplicitParam(name = "userName", value = "用户名", dataType = "String"),
+            @ApiImplicitParam(name = "password", value = "密码", dataType = "String")
     })
     @PutMapping("")
     public ResultBean<Integer> updateUser(@RequestBody User user,

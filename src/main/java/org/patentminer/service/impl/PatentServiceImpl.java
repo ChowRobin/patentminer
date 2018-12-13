@@ -66,9 +66,6 @@ public class PatentServiceImpl implements PatentService {
         if ((publicationDate = patent.getPublicationDate()) != null) {
             update.set("publicationDate", publicationDate);
         }
-        if ((inventionTitle = patent.getInventionTitle()) != null) {
-            update.set("inventionTitle", inventionTitle);
-        }
         return update;
     }
 

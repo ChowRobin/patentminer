@@ -12,6 +12,21 @@ public class Applicant {
     @Field("addressbook")
     AddressBook addressBook;
 
+    @Data
+    class AddressBook {
+
+        @Field("first_name")
+        String firstName;
+
+        @Field("middle_name")
+        String middleName;
+
+        @Field("last_name")
+        String lastName;
+
+        Address address;
+    }
+
     String city;
 
     String country;
@@ -25,4 +40,17 @@ public class Applicant {
     Residence residence;
 
     String state;
+
+    @Data
+    class Nationality {
+        String country;
+    }
+
+    @Data
+    class Residence {
+
+        String country;
+
+    }
+
 }
