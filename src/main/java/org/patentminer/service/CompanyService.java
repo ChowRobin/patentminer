@@ -6,4 +6,10 @@ import org.springframework.stereotype.Service;
 public interface CompanyService {
 
     Company findById(Object id);
+
+    String create(Company company);
+
+    String update(Company company, String id);
+
+    String delete(String id);
 }

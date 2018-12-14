@@ -50,6 +50,12 @@ public class PatentController {
                 CommonUtil.getParameterMap(request), pageNo, pageSize), response);
     }
 
+    /**
+     *
+     * @param patent
+     * @param response
+     * @return
+     */
     @ApiOperation(value = "添加专利", notes = "增加专利")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "inventionTitle", value = "专利名", required = true, dataType = "String"),
@@ -63,6 +69,13 @@ public class PatentController {
         return new ResultBean<>(patentService.create(patent), response);
     }
 
+    /**
+     *
+     * @param id
+     * @param patent
+     * @param response
+     * @return
+     */
     @ApiOperation(value = "更新专利信息", notes = "通过专利号更新专利信息")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "id", value = "专利号", required = true, dataType = "String"),
@@ -78,6 +91,12 @@ public class PatentController {
         return new ResultBean<>(patentService.update(patent, id), response);
     }
 
+    /**
+     *
+     * @param id
+     * @param response
+     * @return
+     */
     @ApiOperation(value = "删除专利", notes = "根据专利号删除专利")
     @ApiImplicitParam(name = "id", value = "专利号", required = true, dataType = "String")
     @DeleteMapping("")

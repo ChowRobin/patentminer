@@ -17,7 +17,7 @@ public class Inventor {
     String name;
 
     @Field("name_cn")
-    String nameCn;
+    String nameCN;
 
 //    @Field("company_id")
 //    String companyId;

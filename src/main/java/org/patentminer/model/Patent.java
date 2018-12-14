@@ -17,9 +17,9 @@ public class Patent {
     public Patent(PatentDTO patentDTO) {
         this.id = patentDTO.getId();
         this.abstractStr = patentDTO.getAbstractStr();
-        this.abstractCn = patentDTO.getAbstractCn();
+        this.abstractCN = patentDTO.getAbstractCN();
         this.inventionTitle = patentDTO.getInventionTitle();
-        this.inventionTitleCn = patentDTO.getInventionTitleCn();
+        this.inventionTitleCN = patentDTO.getInventionTitleCN();
         this.applicationDate = patentDTO.getApplicationDate();
         this.publicationDate = patentDTO.getPublicationDate();
         this.applicationNumber = patentDTO.getApplicationNumber();
@@ -37,7 +37,7 @@ public class Patent {
     String abstractStr;
 
     @Field("abstract_cn")
-    String abstractCn;
+    String abstractCN;
 
 //    String description;
 
@@ -48,7 +48,7 @@ public class Patent {
     List<String> inventionTitle;
 
     @Field("invention_titles_cn")
-    List<String> inventionTitleCn;
+    List<String> inventionTitleCN;
 
     @Field("application_date")
     String applicationDate;

@@ -17,7 +17,7 @@ public class Company {
     String name;
 
     @Field("name_cn")
-    String nameCn;
+    String nameCN;
 
 //    @Field("inventor_ids")
 //    List<String> inventorIds;

@@ -70,7 +70,7 @@ public class PatentServiceImpl implements PatentService {
 
     private Update getUpdate(Patent patent) {
         Update update = new Update();
-        String abstractStr, applicationDate, inventionTitle, publicationDate;
+        String abstractStr, applicationDate, publicationDate;
         if ((abstractStr = patent.getAbstractStr()) != null) {
             update.set("abstractStr", abstractStr);
         }
@@ -87,7 +87,7 @@ public class PatentServiceImpl implements PatentService {
     public String update(Patent patent, String id) {
         Query query = new Query(Criteria.where("id").is(id));
         if (mongoTemplate.findOne(query, Patent.class) == null) {
-            throw new CheckException("This patent not exists.");
+            throw new CheckException("This patent is not exists");
         } else {
             mongoTemplate.updateFirst(query, getUpdate(patent), Patent.class);
         }
@@ -97,7 +97,7 @@ public class PatentServiceImpl implements PatentService {
     @Override
     public String delete(String id) {
         if (CommonUtil.unboxOptional(patentRepository.findById(id)) == null) {
-            throw new CheckException("patent not exists.");
+            throw new CheckException("patent is not exists");
         } else {
             patentRepository.deleteById(id);
         }

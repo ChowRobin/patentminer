@@ -12,9 +12,9 @@ public class PatentDTO {
     public PatentDTO(Patent patent) {
         this.id = patent.getId();
         this.abstractStr = patent.getAbstractStr();
-        this.abstractCn = patent.getAbstractCn();
+        this.abstractCN = patent.getAbstractCN();
         this.inventionTitle = patent.getInventionTitle();
-        this.inventionTitleCn = patent.getInventionTitleCn();
+        this.inventionTitleCN = patent.getInventionTitleCN();
         this.applicationDate = patent.getApplicationDate();
         this.publicationDate = patent.getPublicationDate();
         this.applicationNumber = patent.getApplicationNumber();
@@ -26,11 +26,11 @@ public class PatentDTO {
 
     String abstractStr;
 
-    String abstractCn;
+    String abstractCN;
 
     List<String> inventionTitle;
 
-    List<String> inventionTitleCn;
+    List<String> inventionTitleCN;
 
     String applicationDate;
 

@@ -37,11 +37,6 @@ public class ControllerAOP {
         return result;
     }
 
-//    @Around("execution(public org.patentminer.bean.PageResultBean *(..)) && args(.., res)")
-//    public Object handlerControllerMethodTemp(ProceedingJoinPoint pjp, HttpServletResponse res) {
-//        return handlerControllerMethod(pjp, res);
-//    }
-
     private ResultBean<?> handlerException(ProceedingJoinPoint pjp, Throwable e, HttpServletResponse res) {
         ResultBean<?> result = new ResultBean(res);
 
