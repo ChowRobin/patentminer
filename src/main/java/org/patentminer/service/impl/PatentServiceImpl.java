@@ -1,10 +1,9 @@
 package org.patentminer.service.impl;
 
+import org.bson.types.ObjectId;
 import org.patentminer.dao.PatentDao;
 import org.patentminer.dao.PatentRepository;
 import org.patentminer.exception.CheckException;
-import org.patentminer.model.Company;
-import org.patentminer.model.Inventor;
 import org.patentminer.model.Patent;
 import org.patentminer.model.PatentDTO;
 import org.patentminer.service.CompanyService;
@@ -18,10 +17,10 @@ import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
+import org.springframework.data.querydsl.QuerydslUtils;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -123,4 +122,15 @@ public class PatentServiceImpl implements PatentService {
         return new Patent(patentDTO);
     }
 
+    @Override
+    public List<PatentDTO> listByCompanyId(String companyId) {
+        Query query = new Query(Criteria.where("companyIds").is(new ObjectId(companyId)));
+        return mongoTemplate.find(query, Patent.class).stream().map(p -> PO2DTO(p)).collect(Collectors.toList());
+    }
+
+    @Override
+    public List<PatentDTO> listByInventorId(String inventorId) {
+        Query query = new Query(Criteria.where("inventorIds").is(new ObjectId(inventorId)));
+        return mongoTemplate.find(query, Patent.class).stream().map(p -> PO2DTO(p)).collect(Collectors.toList());
+    }
 }

@@ -2,7 +2,10 @@ package org.patentminer.service.impl;
 
 import org.patentminer.exception.CheckException;
 import org.patentminer.model.Company;
+import org.patentminer.model.CompanyDTO;
 import org.patentminer.service.CompanyService;
+import org.patentminer.service.PatentService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
@@ -16,6 +19,33 @@ public class CompanyServiceImpl implements CompanyService {
 
     @Resource
     private MongoTemplate mongoTemplate;
+
+    @Autowired
+    private PatentService patentService;
+
+    @Override
+    public CompanyDTO findByName(String name) {
+        Query query = new Query();
+        if (name != null) {
+            query.addCriteria(
+                    new Criteria().orOperator(
+                            Criteria.where("name").regex(".*?" + name + ".*"),
+                            Criteria.where("nameCN").regex(".*?" + name + ".*")
+                    )
+            );
+        }
+        Company company = mongoTemplate.findOne(query, Company.class);
+        if (company == null) {
+            throw new CheckException("The company is not exits.");
+        }
+        return PO2DTO(company);
+    }
+
+    public CompanyDTO PO2DTO(Company company) {
+        CompanyDTO companyDTO = new CompanyDTO(company);
+        companyDTO.setPatents(patentService.listByCompanyId(company.getId()));
+        return companyDTO;
+    }
 
     @Override
     public Company findById(Object id) {

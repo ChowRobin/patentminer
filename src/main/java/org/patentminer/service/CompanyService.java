@@ -1,9 +1,11 @@
 package org.patentminer.service;
 
 import org.patentminer.model.Company;
-import org.springframework.stereotype.Service;
+import org.patentminer.model.CompanyDTO;
 
 public interface CompanyService {
+
+    CompanyDTO findByName(String name);
 
     Company findById(Object id);
 

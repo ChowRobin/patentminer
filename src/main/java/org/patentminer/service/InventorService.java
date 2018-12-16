@@ -14,4 +14,6 @@ public interface InventorService {
     String update(Inventor inventor, String id);
 
     String delete(String id);
+
+    InventorDTO findByName(String name);
 }

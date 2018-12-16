@@ -1,8 +1,12 @@
 package org.patentminer.service.impl;
 
+import io.swagger.models.auth.In;
 import org.patentminer.exception.CheckException;
 import org.patentminer.model.Inventor;
+import org.patentminer.model.InventorDTO;
 import org.patentminer.service.InventorService;
+import org.patentminer.service.PatentService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
@@ -16,6 +20,9 @@ public class InventorServiceImpl implements InventorService {
 
     @Resource
     private MongoTemplate mongoTemplate;
+
+    @Autowired
+    private PatentService patentService;
 
     @Override
     public Inventor findById(Object id) {
@@ -58,5 +65,29 @@ public class InventorServiceImpl implements InventorService {
             mongoTemplate.remove(inventor);
         }
         return id;
+    }
+
+    @Override
+    public InventorDTO findByName(String name) {
+        Query query = new Query();
+        if (name != null) {
+            query.addCriteria(
+                    new Criteria().orOperator(
+                            Criteria.where("name").regex(".*?" + name + ".*"),
+                            Criteria.where("nameCN").regex(".*?" + name + ".*")
+                    )
+            );
+        }
+        Inventor inventor = mongoTemplate.findOne(query, Inventor.class);
+        if (inventor == null) {
+            throw new CheckException("The inventor is not exits.");
+        }
+        return PO2DTO(inventor);
+    }
+
+    public InventorDTO PO2DTO(Inventor inventor) {
+        InventorDTO inventorDTO = new InventorDTO(inventor);
+        inventorDTO.setPatents(patentService.listByInventorId(inventor.getId()));
+        return inventorDTO;
     }
 }

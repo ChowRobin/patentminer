@@ -4,6 +4,7 @@ import org.patentminer.model.Patent;
 import org.patentminer.model.PatentDTO;
 import org.springframework.data.domain.Page;
 
+import java.util.List;
 import java.util.Map;
 
 public interface PatentService {
@@ -19,4 +20,8 @@ public interface PatentService {
     Patent DTO2PO(PatentDTO patentDTO);
 
     PatentDTO PO2DTO(Patent patent);
+
+    List<PatentDTO> listByCompanyId(String companyId);
+
+    List<PatentDTO> listByInventorId(String inventorId);
 }
