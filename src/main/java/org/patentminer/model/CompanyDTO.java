@@ -1,6 +1,7 @@
 package org.patentminer.model;
 
 import lombok.Data;
+import org.springframework.data.mongodb.core.mapping.Field;
 
 import java.util.List;
 
@@ -19,6 +20,7 @@ public class CompanyDTO {
 
     String name;
 
+    @Field("name_cn")
     String nameCN;
 
     List<PatentDTO> patents;

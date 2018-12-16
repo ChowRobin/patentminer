@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletResponse;
 
-@Api(value = "/company", tags = "公司模块")
+@Api(tags = "公司模块")
 @RestController
 @RequestMapping("/company")
 public class CompanyController {

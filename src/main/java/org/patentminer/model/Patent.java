@@ -25,6 +25,7 @@ public class Patent {
         this.applicationNumber = patentDTO.getApplicationNumber();
         this.publicationNumber = patentDTO.getPublicationNumber();
         this.ipcs = patentDTO.getIpcs();
+        this.topicId = patentDTO.getTopicId();
 
         this.inventorIds = patentDTO.getInventors().stream().map(p -> p.getId()).collect(Collectors.toList());
         this.companyIds = patentDTO.getCompanies().stream().map(p -> p.getId()).collect(Collectors.toList());
@@ -71,5 +72,7 @@ public class Patent {
     @Field("ipc")
     List<String> ipcs;
 
+    @Field("topic_id")
+    Integer topicId;
 }
 

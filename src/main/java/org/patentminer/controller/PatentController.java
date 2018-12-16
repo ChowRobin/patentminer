@@ -18,7 +18,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
-@Api(value = "/patent", tags = "专利接口模块")
+@Api(tags = "专利接口模块")
 @RestController
 @RequestMapping("/patent")
 public class PatentController {

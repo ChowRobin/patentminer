@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletResponse;
 
-@Api(value = "/inventor", tags = "发明人模块")
+@Api(tags = "发明人模块")
 @RestController
 @RequestMapping("/inventor")
 public class InventorController {

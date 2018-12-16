@@ -5,6 +5,7 @@ import org.patentminer.dao.PatentDao;
 import org.patentminer.dao.PatentRepository;
 import org.patentminer.exception.CheckException;
 import org.patentminer.model.Patent;
+import org.patentminer.model.PatentBO;
 import org.patentminer.model.PatentDTO;
 import org.patentminer.service.CompanyService;
 import org.patentminer.service.InventorService;
@@ -70,6 +71,7 @@ public class PatentServiceImpl implements PatentService {
     private Update getUpdate(Patent patent) {
         Update update = new Update();
         String abstractStr, applicationDate, publicationDate;
+        Integer topicId;
         if ((abstractStr = patent.getAbstractStr()) != null) {
             update.set("abstractStr", abstractStr);
         }
@@ -79,12 +81,15 @@ public class PatentServiceImpl implements PatentService {
         if ((publicationDate = patent.getPublicationDate()) != null) {
             update.set("publicationDate", publicationDate);
         }
+        if ((topicId = patent.getTopicId()) != null) {
+            update.set("topicId", topicId);
+        }
         return update;
     }
 
     @Override
     public String update(Patent patent, String id) {
-        Query query = new Query(Criteria.where("id").is(id));
+        Query query = new Query(Criteria.where("id").is(new ObjectId(id)));
         if (mongoTemplate.findOne(query, Patent.class) == null) {
             throw new CheckException("This patent is not exists");
         } else {
@@ -132,5 +137,19 @@ public class PatentServiceImpl implements PatentService {
     public List<PatentDTO> listByInventorId(String inventorId) {
         Query query = new Query(Criteria.where("inventorIds").is(new ObjectId(inventorId)));
         return mongoTemplate.find(query, Patent.class).stream().map(p -> PO2DTO(p)).collect(Collectors.toList());
+    }
+
+    @Override
+    public PatentBO findBOById(String id) {
+        Query query = new Query(Criteria.where("id").is(new ObjectId(id)));
+        return PO2BO(mongoTemplate.findOne(query, Patent.class));
+    }
+
+    public PatentBO PO2BO(Patent patent) {
+        PatentBO patentBO = new PatentBO();
+        patentBO.setId(patent.getId());
+        patentBO.setInventionTitle(patent.getInventionTitle());
+        patentBO.setInventionTitleCN(patent.getInventionTitleCN());
+        return patentBO;
     }
 }

@@ -2,14 +2,12 @@ package org.patentminer.model;
 
 import lombok.Data;
 import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
 import java.util.List;
 
 @Data
-@Document(collection = "topics")
-public class Topic {
+public class TopicDetail {
 
     @Id
     Integer id;
@@ -19,14 +17,14 @@ public class Topic {
     @Field("name_cn")
     String nameCN;
 
-    @Field("inventor_ids")
-    List<String> inventorIds;
+    @Field("inventors")
+    List<Inventor> inventors;
 
-    @Field("company_ids")
-    List<String> companyIds;
+    @Field("companys")
+    List<Company> companies;
 
-    @Field("patent_ids")
-    List<String> patentIds;
+    @Field("relevant_patents")
+    List<PatentBO> relevantPatents;
 
     @Field("hot_words")
     List<Word> hotWords;

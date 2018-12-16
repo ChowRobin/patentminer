@@ -23,6 +23,7 @@ public class PatentDTO {
         this.applicationNumber = patent.getApplicationNumber();
         this.publicationNumber = patent.getPublicationNumber();
         this.ipcs = patent.getIpcs();
+        this.topicId = patent.getTopicId();
     }
 
     String id;
@@ -57,4 +58,7 @@ public class PatentDTO {
 
     @Field("ipc")
     List<String> ipcs;
+
+    @Field("topic_id")
+    Integer topicId;
 }
